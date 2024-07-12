@@ -1,5 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { HomePage } from "../pages/home";
+
+import { HomePage } from "@/pages/home";
 
 export default function RoutesConfig() {
 	const router = createBrowserRouter([
