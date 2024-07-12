@@ -1,15 +1,14 @@
-import { ThemeProvider, Typography } from "@mui/material"
+import { ThemeProvider } from "@mui/material"
 
 import { makandaTheme } from "./shared/services/material-ui-api"
+import RoutesConfig from "./routes/Routes"
 
 
 function App() {
 
   return (
     <ThemeProvider theme={makandaTheme}>
-      <Typography variant="h1" component={"h1"}>
-        Makanda app
-      </Typography>
+      <RoutesConfig />
     </ThemeProvider>
   )
 }
