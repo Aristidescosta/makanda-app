@@ -1,5 +1,5 @@
 import { DRAWER_OPTIONS } from "@/shared/utils/constantes";
-import { List, ListItem, Stack } from "@mui/material";
+import { List, ListItem, Stack, useMediaQuery, useTheme } from "@mui/material";
 
 import { Link } from "react-router-dom";
 import styled from "styled-components";
@@ -26,6 +26,8 @@ export interface IHeaderProps{
 }
 
 export const Header: React.FC<IHeaderProps> = ({ whenChangingSearchText }) => {
+  const theme = useTheme();
+  const smDown = useMediaQuery(theme.breakpoints.down("sm"));
   return (
     <Stack
       direction={"row"}
@@ -33,7 +35,7 @@ export const Header: React.FC<IHeaderProps> = ({ whenChangingSearchText }) => {
       position={"fixed"}
       alignItems={"center"}
       justifyContent={"space-between"}
-      p={"30px 100px"}
+      p={smDown ? "30px 20px" : "30px 100px"}
       zIndex={2}
       width={"90%"}
       sx={{
@@ -50,7 +52,7 @@ export const Header: React.FC<IHeaderProps> = ({ whenChangingSearchText }) => {
       <Link
         to={"/"}
         style={{
-          fontSize: 35,
+          fontSize: smDown ? 24 : 35,
           color: "#FFF",
           letterSpacing: 2,
           fontWeight: 800,
@@ -62,7 +64,7 @@ export const Header: React.FC<IHeaderProps> = ({ whenChangingSearchText }) => {
         Makanda
       </Link>
 
-      <List
+      {/* <List
         component="nav"
         sx={{
           display: "flex",
@@ -79,7 +81,7 @@ export const Header: React.FC<IHeaderProps> = ({ whenChangingSearchText }) => {
             <StyledLink to={option.path}>{option.name}</StyledLink>
           </ListItem>
         ))}
-      </List>
+      </List> */}
       <InputSearch whenChangingSearchText={whenChangingSearchText} />
     </Stack>
   );

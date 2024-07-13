@@ -1,6 +1,6 @@
 import { useMovie } from "@/shared/state/useMovie";
 import { PlayArrow } from "@mui/icons-material";
-import { Box, Divider, IconButton, Stack, Typography } from "@mui/material";
+import { Box, Divider, IconButton, Stack, Typography, useMediaQuery, useTheme } from "@mui/material";
 import React from "react";
 import styled from "styled-components";
 
@@ -25,6 +25,8 @@ const StyledImage = styled.img`
 
 export const BannerInformation: React.FC = () => {
   const movieInBanner = useMovie((state) => state.movieInBanner);
+  const theme = useTheme();
+  const smDown = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
     <>
@@ -41,7 +43,7 @@ export const BannerInformation: React.FC = () => {
         justifyContent={"space-between"}
         spacing={2}
         position="relative"
-        maxWidth={550}
+        maxWidth={smDown ? 350 : 550}
         zIndex={999999}
         className={
           movieInBanner?.id === movieInBanner?.id ? "active" : undefined
@@ -70,7 +72,7 @@ export const BannerInformation: React.FC = () => {
               <Typography
                 variant="subtitle2"
                 component={"span"}
-                fontSize={32}
+                fontSize={smDown ? 24 :32}
                 color={"#eee"}
               >
                 {movieInBanner?.release_date}
@@ -78,7 +80,7 @@ export const BannerInformation: React.FC = () => {
               <Typography
                 variant="subtitle2"
                 component={"span"}
-                fontSize={32}
+                fontSize={smDown ? 24 :32}
                 color={"#eee"}
               >
                 15+
@@ -86,7 +88,7 @@ export const BannerInformation: React.FC = () => {
               <Typography
                 variant="subtitle2"
                 component={"span"}
-                fontSize={32}
+                fontSize={smDown ? 24 :32}
                 color={"#eee"}
               >
                 2h 07min
@@ -94,7 +96,7 @@ export const BannerInformation: React.FC = () => {
               <Typography
                 variant="subtitle2"
                 component={"span"}
-                fontSize={32}
+                fontSize={smDown ? 24 :32}
                 color={"#eee"}
               >
                 Aventura

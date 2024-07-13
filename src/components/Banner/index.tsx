@@ -1,5 +1,5 @@
 import { MovieSwiper } from "@/pages/home/components";
-import { Box, CircularProgress } from "@mui/material";
+import { Box, CircularProgress, useMediaQuery, useTheme } from "@mui/material";
 import { useMovie } from "@/shared/state/useMovie";
 import { MovieResult } from "@/shared/types";
 
@@ -17,6 +17,8 @@ export const BannerMoves: React.FC<IBannerMovesProps> = ({
   isLoading,
 }) => {
   const movieInBanner = useMovie((state) => state.movieInBanner);
+  const theme = useTheme();
+  const smDown = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
     <Box
@@ -48,7 +50,7 @@ export const BannerMoves: React.FC<IBannerMovesProps> = ({
         left={0}
         width={"100%"}
         height={"100vh"}
-        p={"0 100px"}
+        p={smDown ? "0 20px" : "0 100px"}
         overflow={"hidden"}
         display={"flex"}
         alignItems={"center"}
