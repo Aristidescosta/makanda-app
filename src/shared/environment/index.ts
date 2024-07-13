@@ -1,5 +1,9 @@
+/* Por algum motivo o vercel não está adicionando o API_KEY, vou deixar essa só de teste após identificar gero uma nova
 
-const VITE_API_KEY = import.meta.env.VITE_API_KEY
+*/
+
+//const VITE_API_KEY = import.meta.env.VITE_API_KEY
+const VITE_API_KEY = "c9d611ec2c034352f25f91263e0a90c9"
 
 
 export const Environment = {
