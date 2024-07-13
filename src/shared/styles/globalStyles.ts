@@ -25,7 +25,6 @@ export const MainElement = styled(Box)`
 export const SectionElement = styled(Box)`
     position: relative;
     overflow: hidden;
-    padding: 120px 100px 20px;
     width: 100%;
     transition: ease-in-out;
     transform-origin: bottom;

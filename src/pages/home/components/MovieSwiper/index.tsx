@@ -5,8 +5,9 @@ import React from "react";
 import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
 import "swiper/css";
-import { MovieResult } from "@/shared/types";
+
 import { useMovie } from "@/shared/state/useMovie";
+import { MovieResult } from "@/shared/types";
 
 interface IMovieSwiperProps {
   movies: MovieResult[];
@@ -60,7 +61,7 @@ export const MovieSwiper: React.FC<IMovieSwiperProps> = ({ movies }) => {
         >
           <img
             src={`https://image.tmdb.org/t/p/w1280${movie.backdrop_path}`}
-            alt="teste"
+            alt={`Imagem do filme ${movie.title}`}
             style={{ display: "block", width: "100%", height: "100%" }}
           />
         </SwiperSlide>

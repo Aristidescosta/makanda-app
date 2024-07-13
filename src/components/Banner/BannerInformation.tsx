@@ -33,7 +33,7 @@ export const BannerInformation: React.FC = () => {
         className={
           movieInBanner?.id === movieInBanner?.id ? "active" : undefined
         }
-        alt=""
+        alt={`Imagem do filme ${movieInBanner?.backdrop_path}`}
       />
       <Stack
         direction="row"

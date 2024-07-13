@@ -1,4 +1,4 @@
-import { MovieData } from "@/shared/types";
+import { MovieData, MovieDetails, MovieResult } from "@/shared/types";
 
 import { Environment } from "../../../environment";
 import { Api } from "../axios-config";
@@ -8,7 +8,10 @@ const getAll = async (
   filter = ""
 ): Promise<MovieData | Error> => {
   try {
-    const relativeUrl = `movie/popular?language=pt-BR&page=${page}&filter=${filter}&limit=${Environment.LIMITE_DE_LINHAS}&api_key=${Environment.API_KEY}`;
+    let relativeUrl = `movie/popular?language=pt-BR&page=${page}&filter=${filter}&limit=${Environment.LIMITE_DE_LINHAS}&api_key=${Environment.API_KEY}`;
+    if (filter.trim() !== "") {
+      relativeUrl = `search/movie?api_key=${Environment.API_KEY}&query=${filter}`
+    }
     const { data } = await Api.get<MovieData>(relativeUrl);
     if (data)
       return {
@@ -26,7 +29,22 @@ const getAll = async (
   }
 };
 
+const getById = async (id: number): Promise<MovieDetails | Error> => {
+  try {
+    const { data } = await Api.get(`movie/${id}?api_key=${Environment.API_KEY}&language=pt-BR`);
+    if (data) return data;
+    return new Error("Erro ao listar os dados do filme");
+  } catch (error) {
+    console.error(error);
+    return new Error(
+      (error as { message: string }).message ||
+      "Houve um erro interno, tente novamente"
+    );
+  }
+};
+
 
 export const MovieService = {
   getAll,
+  getById
 };
