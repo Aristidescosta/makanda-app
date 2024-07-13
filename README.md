@@ -1,4 +1,4 @@
-# Movie Search App
+# Makanda App
 
 ## Descrição
 Este projeto é uma aplicação web frontend que permite aos usuários pesquisar e visualizar informações sobre filmes. A aplicação foi desenvolvida utilizando React, styled-components e Material para a estilização e a API OMDb para buscar os dados dos filmes.
