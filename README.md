@@ -1,31 +1,40 @@
-# React + TypeScript + Vite
+# Movie Search App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Descrição
+Este projeto é uma aplicação web frontend que permite aos usuários pesquisar e visualizar informações sobre filmes. A aplicação foi desenvolvida utilizando React, styled-components e Material para a estilização e a API OMDb para buscar os dados dos filmes.
 
-Currently, two official plugins are available:
+## Funcionalidades
+1. **Interface de Usuário**:
+   - Campo de entrada (input) onde o usuário pode digitar o título de um filme.
+   - Botão de “Pesquisar” para iniciar a busca.
+   - Área para exibir os resultados da busca, incluindo informações como título do filme, ano de lançamento, sinopse e um pôster.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+2. **Funcionalidade de Pesquisa**:
+   - Ao clicar no botão “Pesquisar”, a aplicação faz uma chamada à API de filmes (OMDb API) para obter os dados dos filmes que correspondem ao título pesquisado.
+   - Os resultados são exibidos de forma clara e organizada.
 
-## Expanding the ESLint configuration
+3. **Detalhes do Filme**:
+   - Ao clicar em um filme nos resultados da pesquisa, o usuário é redirecionado para uma página de detalhes do filme, onde informações adicionais sobre o filme são exibidas (por exemplo, elenco, classificação, gênero etc.).
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+4. **Responsividade**:
+   - A aplicação é responsiva e funciona bem em dispositivos de diferentes tamanhos de tela (desktop, tablet e mobile).
 
-- Configure the top-level `parserOptions` property like this:
+5. **Acessibilidade**:
+   - Segue as melhores práticas de acessibilidade, garantindo que a aplicação possa ser usada por pessoas com diferentes necessidades (uso de etiquetas adequadas, navegação por teclado etc.).
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+## Tecnologias Utilizadas
+- React
+- TypeScript 
+- Material UI
+- styled-components
+- OMDb API
+- Git
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
-# makanda-app
+## Pré-requisitos
+Antes de começar, certifique-se de ter o Node.js e o npm (ou yarn) instalados na sua máquina.
+
+## Instalação
+1. Clone o repositório:
+   ```bash
+   git clone https://github.com/Aristidescosta/makanda-app.git
+   cd makanda-app
