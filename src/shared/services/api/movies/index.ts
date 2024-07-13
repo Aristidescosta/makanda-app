@@ -1,4 +1,4 @@
-import { MovieData, MovieDetails, MovieResult } from "@/shared/types";
+import { MovieData, MovieDetails } from "@/shared/types";
 
 import { Environment } from "../../../environment";
 import { Api } from "../axios-config";
