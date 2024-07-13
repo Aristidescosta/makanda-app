@@ -1,53 +1,22 @@
 import { MovieSwiper } from "@/pages/home/components";
-import { IMovieType } from "@/shared/types";
-import { Box, Button, Divider, Stack, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
+import { Box, CircularProgress } from "@mui/material";
+import { useMovie } from "@/shared/state/useMovie";
+import { MovieResult } from "@/shared/types";
 
-const StyledImage = styled.img`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  font-size: 8rem;
-  visibility: hidden;
-  opacity: 0;
-  transition: 1s;
+import React from "react";
 
-  &.active {
-    visibility: visible;
-    opacity: 1;
-  }
-`;
+import { BannerInformation } from "./BannerInformation";
 
-export const BannerMoves: React.FC = () => {
-  const [movies, setMovies] = useState<IMovieType[]>([]);
+export interface IBannerMovesProps {
+  movies: MovieResult[];
+  isLoading: boolean;
+}
 
-  const fetchData = () => {
-    const controller = new AbortController();
-    const signal = controller.signal;
-
-    fetch("http://localhost:5173/data/movies.json", { signal })
-      .then((response) => response.json())
-      .then((data) => setMovies(data as IMovieType[]))
-      .catch((err) => {
-        if (err.name !== "AbortError") {
-          console.error(err.message);
-        }
-      });
-
-    return () => {
-      controller.abort();
-    };
-  };
-
-  useEffect(() => {
-    const cleanup = fetchData();
-    return cleanup;
-  }, []);
+export const BannerMoves: React.FC<IBannerMovesProps> = ({
+  movies,
+  isLoading,
+}) => {
+  const movieInBanner = useMovie((state) => state.movieInBanner);
 
   return (
     <Box
@@ -86,91 +55,9 @@ export const BannerMoves: React.FC = () => {
         justifyContent={"space-between"}
         pb={100}
       >
-        <StyledImage src="batman.jpg" className="active" alt="" />
-        <Stack
-          direction="row"
-          alignItems={"center"}
-          justifyContent={"space-between"}
-          spacing={2}
-          position="relative"
-          maxWidth={550}
-          zIndex={999999}
-          className="active"
-          sx={{
-            transform: "scale(0)",
-            transition: "1s",
-            opacity: 0,
-            visibility: "hidden",
-            /* visibility: "visible", */
-
-            "&.active": {
-              transform: "scale(1)",
-              visibility: "visible",
-              opacity: 1,
-            },
-          }}
-        >
-          <Box>
-            <Typography variant="h4" component={"h4"}>
-              BATMAN
-              <Stack
-                direction="row"
-                divider={<Divider orientation="vertical" flexItem />}
-                spacing={2}
-              >
-                <Typography
-                  variant="subtitle2"
-                  component={"span"}
-                  fontSize={32}
-                  color={"#eee"}
-                >
-                  2023
-                </Typography>
-                <Typography
-                  variant="subtitle2"
-                  component={"span"}
-                  fontSize={32}
-                  color={"#eee"}
-                >
-                  15+
-                </Typography>
-                <Typography
-                  variant="subtitle2"
-                  component={"span"}
-                  fontSize={32}
-                  color={"#eee"}
-                >
-                  2h 07min
-                </Typography>
-                <Typography
-                  variant="subtitle2"
-                  component={"span"}
-                  fontSize={32}
-                  color={"#eee"}
-                >
-                  Aventura
-                </Typography>
-              </Stack>
-            </Typography>
-            <Typography variant="body1" component={"p"} color={"#fff"}>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab
-              quisquam rem obcaecati nostrum asperiores iusto! Quod esse natus
-              officia similique voluptas quasi, dignissimos, sed reprehenderit
-              quidem impedit culpa, maiores officiis!
-            </Typography>
-            <Stack direction="row" spacing={2}>
-              <Button variant="contained">Contained</Button>
-              <Button variant="contained" disabled>
-                Disabled
-              </Button>
-              <Button variant="contained" href="#contained-buttons">
-                Link
-              </Button>
-            </Stack>
-          </Box>
-        </Stack>
+        {!movieInBanner ? <CircularProgress /> : <BannerInformation />}
       </Box>
-      <MovieSwiper movies={movies} />
+      {isLoading ? <CircularProgress /> : <MovieSwiper movies={movies} />}
     </Box>
   );
 };

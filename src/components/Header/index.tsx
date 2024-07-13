@@ -21,7 +21,11 @@ const StyledLink = styled(Link)`
   }
 `;
 
-export const Header: React.FC = () => {
+export interface IHeaderProps{
+  whenChangingSearchText?: (newText: string) => void;
+}
+
+export const Header: React.FC<IHeaderProps> = ({ whenChangingSearchText }) => {
   return (
     <Stack
       direction={"row"}
@@ -76,7 +80,7 @@ export const Header: React.FC = () => {
           </ListItem>
         ))}
       </List>
-      <InputSearch />
+      <InputSearch whenChangingSearchText={whenChangingSearchText} />
     </Stack>
   );
 };

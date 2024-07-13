@@ -1,5 +1,3 @@
-import { IMovieType } from "@/shared/types";
-
 import { Autoplay, EffectCoverflow } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import React from "react";
@@ -7,12 +5,16 @@ import React from "react";
 import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
 import "swiper/css";
+import { MovieResult } from "@/shared/types";
+import { useMovie } from "@/shared/state/useMovie";
 
 interface IMovieSwiperProps {
-  movies: IMovieType[];
+  movies: MovieResult[];
 }
 
 export const MovieSwiper: React.FC<IMovieSwiperProps> = ({ movies }) => {
+  const addPreviewMovie = useMovie((state) => state.addMovieInBanner);
+
   return (
     <Swiper
       style={{
@@ -47,18 +49,19 @@ export const MovieSwiper: React.FC<IMovieSwiperProps> = ({ movies }) => {
     >
       {movies.map((movie) => (
         <SwiperSlide
-          key={movie._id}
+          key={movie.id}
           style={{
             backgroundPosition: "center",
             backgroundSize: "cover",
             width: "150px",
             height: "200px",
           }}
+          onClick={() => addPreviewMovie(movie)}
         >
           <img
-            src={movie.bgImg}
+            src={`https://image.tmdb.org/t/p/w1280${movie.backdrop_path}`}
             alt="teste"
-            style={{ display: "block", width: "100%" }}
+            style={{ display: "block", width: "100%", height: "100%" }}
           />
         </SwiperSlide>
       ))}

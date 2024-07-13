@@ -1,5 +1,6 @@
 import { SectionElement, SectionH1 } from "@/shared/styles/globalStyles";
-import { IMovieType } from "@/shared/types";
+import { IBannerMovesProps } from "@/components/Banner";
+
 import {
   Box,
   Button,
@@ -8,37 +9,17 @@ import {
   CardActions,
   CardContent,
   CardMedia,
+  CircularProgress,
   Grid,
   Stack,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React from "react";
 
-export const Schedule: React.FC = () => {
-  const [movies, setMovies] = useState<IMovieType[]>([]);
-
-  const fetchData = () => {
-    const controller = new AbortController();
-    const signal = controller.signal;
-
-    fetch("http://localhost:5173/data/movies.json", { signal })
-      .then((response) => response.json())
-      .then((data) => setMovies(data as IMovieType[]))
-      .catch((err) => {
-        if (err.name !== "AbortError") {
-          console.error(err.message);
-        }
-      });
-
-    return () => {
-      controller.abort();
-    };
-  };
-
-  useEffect(() => {
-    const cleanup = fetchData();
-    return cleanup;
-  }, []);
+export const Schedule: React.FC<IBannerMovesProps> = ({
+  isLoading,
+  movies,
+}) => {
   return (
     <SectionElement component={"section"}>
       <Box>
@@ -52,34 +33,43 @@ export const Schedule: React.FC = () => {
         <Button variant="contained">Contained</Button>
         <Button variant="outlined">Outlined</Button>
       </Stack>
+
       <Grid container spacing={2}>
-        {movies.map((movie) => (
-          <Grid item xs={6} md={3}>
-            <Card sx={{ maxWidth: 345 }}>
-              <CardActionArea>
-                <CardMedia
-                  component="img"
-                  height="140"
-                  image={movie.bgImg}
-                  alt="green iguana"
-                />
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="div">
-                    {movie.title}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {movie.description}
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-              <CardActions>
-                <Button size="small" color="primary">
-                  Share
-                </Button>
-              </CardActions>
-            </Card>
-          </Grid>
-        ))}
+        {isLoading ? (
+          <CircularProgress />
+        ) : (
+          movies.map((movie) => (
+            <Grid item xs={6} md={3} key={movie.id}>
+              <Card sx={{ maxWidth: 345, height: 480 }}>
+                <CardActionArea sx={{ overflow: "hidden", height: "100%" }}>
+                  <CardMedia
+                    component="img"
+                    height="140"
+                    image={`https://image.tmdb.org/t/p/w1280${movie.backdrop_path}`}
+                    alt="green iguana"
+                  />
+                  <CardContent>
+                    <Typography gutterBottom variant="h5" component="div">
+                      {movie.title}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      textOverflow={"ellipsis"}
+                    >
+                      {movie.overview}
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+                <CardActions>
+                  <Button size="small" color="primary">
+                    Share
+                  </Button>
+                </CardActions>
+              </Card>
+            </Grid>
+          ))
+        )}
       </Grid>
     </SectionElement>
   );
