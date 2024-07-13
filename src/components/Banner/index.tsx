@@ -57,7 +57,7 @@ export const BannerMoves: React.FC<IBannerMovesProps> = ({
         justifyContent={"space-between"}
         pb={100}
       >
-        {!movieInBanner ? <CircularProgress /> : <BannerInformation />}
+        {!movieInBanner && isLoading ? <CircularProgress /> : <BannerInformation />}
       </Box>
       {isLoading ? <CircularProgress /> : <MovieSwiper movies={movies} />}
     </Box>

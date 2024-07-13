@@ -1,27 +1,11 @@
-import { DRAWER_OPTIONS } from "@/shared/utils/constantes";
-import { List, ListItem, Stack, useMediaQuery, useTheme } from "@mui/material";
+import { Stack, useMediaQuery, useTheme } from "@mui/material";
 
 import { Link } from "react-router-dom";
-import styled from "styled-components";
 import React from "react";
 
 import { InputSearch } from "../InputSearch";
 
-const StyledLink = styled(Link)`
-  color: #fff;
-  text-decoration: none;
-  font-weight: 400;
-  letter-spacing: 1px;
-  cursor: pointer;
-  transition: 0.3s;
-  text-transform: "uppercase";
-
-  &:hover {
-    color: #ff3700;
-  }
-`;
-
-export interface IHeaderProps{
+export interface IHeaderProps {
   whenChangingSearchText?: (newText: string) => void;
 }
 
@@ -63,25 +47,6 @@ export const Header: React.FC<IHeaderProps> = ({ whenChangingSearchText }) => {
       >
         Makanda
       </Link>
-
-      {/* <List
-        component="nav"
-        sx={{
-          display: "flex",
-        }}
-      >
-        {DRAWER_OPTIONS.map((option) => (
-          <ListItem
-            key={option.id}
-            sx={{
-              listStyle: "none",
-              textTransform: "uppercase",
-            }}
-          >
-            <StyledLink to={option.path}>{option.name}</StyledLink>
-          </ListItem>
-        ))}
-      </List> */}
       <InputSearch whenChangingSearchText={whenChangingSearchText} />
     </Stack>
   );
