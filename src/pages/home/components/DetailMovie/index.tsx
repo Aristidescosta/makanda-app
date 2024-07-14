@@ -8,7 +8,6 @@ import {
   CardMedia,
   CircularProgress,
   Drawer,
-  IconButton,
   Stack,
   Typography,
   useMediaQuery,
@@ -19,7 +18,6 @@ import React, { useEffect, useState } from "react";
 
 import { MovieSinopse } from "./MovieSinopse";
 import { CircularProgressWithLabel } from "@/components";
-import { PlayArrow } from "@mui/icons-material";
 import { TrailerType } from "@/shared/types/TrailerType";
 
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -155,11 +153,10 @@ export const DetailMovie: React.FC<IDetailMovieProps> = ({
               </Box>
               {trailers.length > 0 && (
                 <Box
-                  width={"100%"}
-                  /* overflow={"hidden"} */
+                  /* width={"100%"}
                   display={"flex"}
-                  alignItens="center"
-                  flexDirection={"column"}
+                  alignItems="center"
+                  flexDirection={"column"} */
                   mt={4}
                 >
                   <Typography>Trailers ({trailers.length})</Typography>
@@ -168,20 +165,11 @@ export const DetailMovie: React.FC<IDetailMovieProps> = ({
                     grabCursor={true}
                     centeredSlides={true}
                     slidesPerView={mdDown ? "auto" : smDown ? 2 : 2}
-                    /* loop */
                     modules={[Autoplay, EffectCards]}
-                    /* autoplay={{
-                      delay: 2500,
-                      disableOnInteraction: false,
-                    }} */
-                   style={{ width: "100%" }}
+                    style={{ width: "100%" }}
                   >
                     {trailers.map((trailer) => (
-                      <SwiperSlide
-                        key={trailer.key}
-                        /* onClick={() => onSelectedMovie(movie)} */
-                        style={{ marginLeft: 3 }}
-                      >
+                      <SwiperSlide key={trailer.key} style={{ marginLeft: 3 }}>
                         <Card sx={{ maxWidth: 345 }}>
                           <CardMedia
                             component="iframe"
