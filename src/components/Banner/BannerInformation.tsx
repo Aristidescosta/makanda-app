@@ -107,7 +107,7 @@ export const BannerInformation: React.FC = () => {
             {movieInBanner?.overview}
           </Typography>
           <Stack direction="row" spacing={2}>
-            <IconButton aria-label="delete"  size="large">
+            <IconButton aria-label="Apresentar trailer"  size="large">
               <PlayArrow fontSize="inherit" />
             </IconButton>
           </Stack>

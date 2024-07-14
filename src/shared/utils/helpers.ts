@@ -1,15 +1,15 @@
 declare global {
-    interface Number {
-        convertToKwanzaMoney(): string
-        convertToKwanzaMoneyWithoutSymbol(): string
-        formatMoney(): string
-    }
+	interface Number {
+		convertToKwanzaMoney(): string
+		convertToKwanzaMoneyWithoutSymbol(): string
+		formatMoney(): string
+	}
 
-    interface String {
-        formatCurrency(this: string): string
-        convertToNumber(this: string): number
-        isEmpty(): boolean
-    }
+	interface String {
+		formatCurrency(this: string): string
+		convertToNumber(this: string): number
+		isEmpty(): boolean
+	}
 }
 
 
@@ -96,3 +96,48 @@ Number.prototype.convertToKwanzaMoneyWithoutSymbol = function () {
 		return formattedMoney;
 	}
 }
+
+
+
+const LANG = "pt-PT";
+const CURRENCY = "AOA";
+
+/**
+ * Formats a numeric value into a currency string.
+ * @param {number} value - The numeric value to be formatted.
+ * @returns {string} The formatted currency string.
+*/
+function getFormattedCurrency(value: number): string {
+	let money = ''
+	if (value.valueOf() >= 1000) {
+
+		money = value.toLocaleString(LANG, {
+			style: "currency",
+			currency: CURRENCY
+		})
+
+		if (value.valueOf() > 9999) {
+			const moneyFormated = money.replace(/\s/g, ".").replace(CURRENCY, "Kz")
+			return moneyFormated.replace(".Kz", " Kz")
+		} else {
+
+			const parts = money.split(",");
+			const integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+			const formattedMoney = integerPart + "," + parts[1]
+			return formattedMoney.replace(CURRENCY, "Kz")
+		}
+
+	}
+
+	money = value.toLocaleString(LANG, {
+		minimumFractionDigits: 2,
+		maximumFractionDigits: 2
+	});
+
+	const parts = money.split(",");
+	const integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+	const formattedMoney = integerPart + "," + parts[1] + " Kz";
+	return formattedMoney;
+}
+
+export { getFormattedCurrency }

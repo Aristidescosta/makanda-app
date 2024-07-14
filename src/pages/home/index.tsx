@@ -21,7 +21,9 @@ export const HomePage: React.FC = () => {
 
   const [searchParams, setSearchParams] = useSearchParams();
   const [movies, setMovies] = useState<MovieResult[]>([]);
+  const [bannerMovies, setBannerMovies] = useState<MovieResult[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isBannerLoading, setIsBannerLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
   const search = useMemo(() => {
@@ -44,6 +46,9 @@ export const HomePage: React.FC = () => {
 
   useEffect(() => {
     setIsLoading(true);
+    if (search.trim() === "" && bannerMovies.length === 0) {
+      setIsBannerLoading(true);
+    }
     theBounce(() => {
       MovieService.getAll(page, search).then((result) => {
         setIsLoading(false);
@@ -51,9 +56,15 @@ export const HomePage: React.FC = () => {
           alert(result.message);
           return;
         }
-        addMovieInBanner(
-          result.results[Math.floor(Math.random() * result.results.length - 1)]
-        );
+        if (search.trim() === "" && bannerMovies.length === 0) {
+          addMovieInBanner(
+            result.results[
+              Math.floor(Math.random() * result.results.length - 2)
+            ]
+          );
+          setBannerMovies(result.results);
+          setIsBannerLoading(false);
+        }
         setMovies(result.results);
       });
     });
@@ -66,7 +77,7 @@ export const HomePage: React.FC = () => {
           setSearchParams({ search: texto, page: "1" }, { replace: true })
         }
       />
-      <BannerMoves movies={movies} isLoading={isLoading} />
+      <BannerMoves movies={bannerMovies} isLoading={isBannerLoading} />
       <MainElement>
         <Schedule
           movies={movies}

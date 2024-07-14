@@ -3,8 +3,12 @@ import { MovieService } from "@/shared/services/api";
 import {
   Box,
   Button,
+  Card,
+  CardContent,
+  CardMedia,
   CircularProgress,
   Drawer,
+  IconButton,
   Stack,
   Typography,
   useMediaQuery,
@@ -14,6 +18,12 @@ import {
 import React, { useEffect, useState } from "react";
 
 import { MovieSinopse } from "./MovieSinopse";
+import { CircularProgressWithLabel } from "@/components";
+import { PlayArrow } from "@mui/icons-material";
+import { TrailerType } from "@/shared/types/TrailerType";
+
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, EffectCards } from "swiper/modules";
 
 interface IDetailMovieProps {
   movie: MovieResult;
@@ -30,9 +40,11 @@ export const DetailMovie: React.FC<IDetailMovieProps> = ({
   const [findedMovie, setFindedMovie] = useState<MovieDetails>(
     {} as MovieDetails
   );
+  const [trailers, setTrailers] = useState<TrailerType[]>([]);
 
   const theme = useTheme();
   const smDown = useMediaQuery(theme.breakpoints.down("sm"));
+  const mdDown = useMediaQuery(theme.breakpoints.down("md"));
 
   useEffect(() => {
     setIsLoading(true);
@@ -41,16 +53,29 @@ export const DetailMovie: React.FC<IDetailMovieProps> = ({
       if (result instanceof Error) alert(result.message);
       else setFindedMovie(result);
     });
-  }, []);
+    MovieService.getTrailer(movie.id).then((movieTrailers) => {
+      if (movieTrailers instanceof Error) alert(movieTrailers.message);
+      else {
+        setTrailers(
+          movieTrailers.filter(
+            (movieTrailer) =>
+              movieTrailer.type === "Trailer" &&
+              movieTrailer.site === "YouTube" &&
+              movieTrailer.official
+          )
+        );
+      }
+    });
+  }, [movie.id]);
 
-
+  console.log(trailers);
 
   return (
     <Drawer anchor="right" open={isOpen} onClose={handleCloseDetailMove}>
-      <Box width={smDown ? 470 : 820}>
-        {isLoading ? (
+      <Box width={smDown || mdDown ? "100%" : "820px"}>
+        {isLoading && findedMovie ? (
           <Box
-            width={"100%"}
+            width={smDown || mdDown ? "100%" : "820px"}
             height={"100vh"}
             display="flex"
             alignItems={"center"}
@@ -71,32 +96,112 @@ export const DetailMovie: React.FC<IDetailMovieProps> = ({
             <img
               src={`https://image.tmdb.org/t/p/w1280${findedMovie.backdrop_path}`}
               alt={`Imagem do filme ${findedMovie.title}`}
+              style={{ width: "100%" }}
             />
-            <Box p={8}>
-              <Typography variant="h3" component={"h3"}>
+            <Box p={smDown || mdDown ? 2 : 8}>
+              <Typography variant="h3" fontSize={32} component={"h3"}>
                 {findedMovie.title}
               </Typography>
 
-              <Typography variant="subtitle2" component={"span"}>
+              <Typography
+                variant="subtitle2"
+                fontSize={smDown ? 12 : mdDown ? 14 : 18}
+                component={"span"}
+              >
                 {findedMovie.overview}
               </Typography>
 
-              <Box mt={12}>
+              <Box
+                mt={smDown || mdDown ? 2 : 12}
+                display={"flex"}
+                justifyContent={"space-between"}
+              >
                 <Box>
-                  <MovieSinopse title="Estado" subtitle={findedMovie.status} />
+                  <MovieSinopse
+                    title="Estado"
+                    subtitle={findedMovie.status}
+                    fontSize={smDown ? 12 : mdDown ? 14 : 18}
+                  />
                   <MovieSinopse
                     title="Orçamento"
-                    subtitle={String(findedMovie.budget)}
+                    subtitle={findedMovie.budget}
+                    fontSize={smDown ? 12 : mdDown ? 14 : 18}
                   />
                   <MovieSinopse
                     title="Bilheteira"
-                    subtitle={String(findedMovie.revenue)}
+                    subtitle={findedMovie.revenue}
+                    fontSize={smDown ? 12 : mdDown ? 14 : 18}
                   />
                 </Box>
+
+                <Box>
+                  <Box display={"flex"} alignItems={"center"} gap={1}>
+                    <CircularProgressWithLabel
+                      value={findedMovie.popularity / 100}
+                    />
+                    <Box>
+                      <Typography fontSize={smDown ? 12 : mdDown ? 14 : 18}>
+                        Classificação
+                      </Typography>
+                      <Typography fontSize={smDown ? 12 : mdDown ? 14 : 18}>
+                        dos
+                      </Typography>
+                      <Typography fontSize={smDown ? 12 : mdDown ? 14 : 18}>
+                        utilizadores
+                      </Typography>
+                    </Box>
+                  </Box>
+                </Box>
               </Box>
-              <Button onClick={handleCloseDetailMove}>
-                Voltar
-              </Button>
+              {trailers.length > 0 && (
+                <Box
+                  width={"100%"}
+                  /* overflow={"hidden"} */
+                  display={"flex"}
+                  alignItens="center"
+                  flexDirection={"column"}
+                  mt={4}
+                >
+                  <Typography>Trailers ({trailers.length})</Typography>
+                  <Swiper
+                    effect="card"
+                    grabCursor={true}
+                    centeredSlides={true}
+                    slidesPerView={mdDown ? "auto" : smDown ? 2 : 2}
+                    /* loop */
+                    modules={[Autoplay, EffectCards]}
+                    /* autoplay={{
+                      delay: 2500,
+                      disableOnInteraction: false,
+                    }} */
+                   style={{ width: "100%" }}
+                  >
+                    {trailers.map((trailer) => (
+                      <SwiperSlide
+                        key={trailer.key}
+                        /* onClick={() => onSelectedMovie(movie)} */
+                        style={{ marginLeft: 3 }}
+                      >
+                        <Card sx={{ maxWidth: 345 }}>
+                          <CardMedia
+                            component="iframe"
+                            height="194"
+                            image={`https://www.youtube.com/embed/${trailer.key}`}
+                            title="Trailer"
+                          />
+                          <CardContent>
+                            <Typography variant="h5" component="div">
+                              {trailer.name}
+                            </Typography>
+                          </CardContent>
+                        </Card>
+                      </SwiperSlide>
+                    ))}
+                  </Swiper>
+                </Box>
+              )}
+
+              <Button onClick={handleCloseDetailMove}>Voltar</Button>
             </Box>
           </Stack>
         )}
