@@ -1,13 +1,16 @@
+import { getFormattedCurrency } from "@/shared/utils/helpers";
 import { Box, Typography } from "@mui/material";
 import React from "react";
 
 interface IMovieSinopseProps {
   title: string;
-  subtitle: string;
+  subtitle: string | number;
+  fontSize: number
 }
 
 export const MovieSinopse: React.FC<IMovieSinopseProps> = ({
   title,
+  fontSize,
   subtitle,
 }) => {
   return (
@@ -16,8 +19,8 @@ export const MovieSinopse: React.FC<IMovieSinopseProps> = ({
         {title}
       </Typography>
 
-      <Typography variant="subtitle2" component={"span"} fontSize={12}>
-        {subtitle}
+      <Typography variant="subtitle2" component={"span"} fontWeight={300} fontSize={fontSize}>
+        {typeof subtitle === "string" ? subtitle : getFormattedCurrency(subtitle)}
       </Typography>
     </Box>
   );

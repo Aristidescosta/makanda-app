@@ -29,11 +29,6 @@ export const Schedule: React.FC<IScheduleProps> = ({
   const theme = useTheme();
   const smDown = useMediaQuery(theme.breakpoints.down("sm"));
   const mdDown = useMediaQuery(theme.breakpoints.down("md"));
-  const xsDown = useMediaQuery(theme.breakpoints.down("xs"));
-
-  console.log("smDown: ", smDown);
-  console.log("mdDown: ", mdDown);
-  console.log("xsDown: ", xsDown);
 
   const splitMovies = (originalMovies: MovieResult[], chunckSize: number) => {
     const resultArray = [];
